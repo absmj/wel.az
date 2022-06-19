@@ -37,7 +37,7 @@
 
 
 <script>
-
+import {functions} from '@/mixins.js'
 import {mapActions, mapGetters} from 'vuex'
 
 export default {
@@ -46,7 +46,7 @@ export default {
       load: false
     }
   },
-
+  mixins: [functions],
   computed: {
       ...mapGetters({
           films: 'films'
@@ -57,7 +57,9 @@ export default {
   watch:{
       films(){
           if(this.films.length < 20 && !this.$store.state.server)
-              this.$store.dispatch('getFilms');    
+            !this.$store.state.firstAsk ? 
+                                        confirm(this.lang[this.$store.state.language]['moreResult']) && this.$store.dispatch('getFilms') :
+                                        this.$store.dispatch('getFilms');    
       },
       deep: true
   },

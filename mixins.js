@@ -71,7 +71,7 @@ export const functions = {
                 src = "http://cdn"+e[0]+".video.az/storage/" + (type == 2 ? "episode/" : "movie/") + e[1]+"video.mp4";
 
             
-          console.log(ar);
+          
             document.getElementsByName('title').textContent = 
                 (type ===  1 ? this.GetFilmName(ar.name, "name", code) : name) + 
                 (type == 2 ? (' - '+this.GetFilmName(ar.w_title, 'name', code)||' - ') + ' ' : '') +

@@ -286,8 +286,8 @@ export default {
                 paused: null,
                 status: null,
                 duration: null,
-                desc: document.querySelector('head meta[name="description"]'),
-                title: document.getElementsByTagName("title"),
+                // desc: document.querySelector('head meta[name="description"]'),
+                // title: document.getElementsByTagName("title"),
                 volume: 80,
                 vlP: 0,
                 word: "",
@@ -499,8 +499,8 @@ export default {
           
       },
 
-      play() {
-        this.videoElement.play();
+      async play() {
+        await this.videoElement.play();
         this.paused = false;
         this.s_d_panel = false;
         this.stg_panel = false;
@@ -614,8 +614,8 @@ export default {
             MakingExamPoints()
             {
 
-                    axios
-                    .post(config.url + 'api/exam/index.php', qs.stringify({'s': this.film.id, 't': this.exam.from, 'f': this.exam.to, 's_t': this.film.exam[this.e_step], 'e_t': this.film.exam[this.e_step + 1], 'sub': (this.type === 2 ? (this.sub !== null ? 1 : 0) : (this.film.srt.length > 0 ? 1 : 0))}))
+                    this.$axios
+                    .$post(config.url + 'api/exam/index.php', qs.stringify({'s': this.film.id, 't': this.exam.from, 'f': this.exam.to, 's_t': this.film.exam[this.e_step], 'e_t': this.film.exam[this.e_step + 1], 'sub': (this.type === 2 ? (this.sub !== null ? 1 : 0) : (this.film.srt.length > 0 ? 1 : 0))}))
                     .then(response => (this.exam.question = response.data.Exams));
 
             },
@@ -683,10 +683,12 @@ export default {
       }
     },
 
-    mounted(){
+    async mounted(){
 
       this.$bvModal.show('modal-center');
-      const e = this.$store.getters.nameFilm(this.film, 3, true).split("_");
+      console.log(this.$store.state.film);
+      let e = await this.$store.getters.nameFilm(this.$store.state.film, 3, true);
+      e = e.split("_")
       this.src = "http://cdn"+e[0]+".video.az/storage/" + (this.type == 2 ? "episode/" : "movie/") + e[1]+"video.mp4";
       this.lng_t = this.lng_; this.exam.to = this.lng_; 
 

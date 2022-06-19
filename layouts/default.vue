@@ -6,11 +6,13 @@
       <div class="row p-0 m-0">
         <nav class="col-12 d-flex flex-column justify-content-center flex-lg-row p-0 m-0 justify-content-lg-between nav navbar">
           <img class="img-fluid" src='img/logo.svg' style="width: 75px; filter: invert(100%); transform: 1s">
-
+                    <!-- Filter -->
+          
           <!-- Axtarış -->
           <div v-if= "$store.state.type === 1" class="m-lg-auto" style="position: relative; transform: 1s">
             <input type="text" class="input-searcher" style="position:relative" @input = "$store.dispatch('resetFilter'), $store.dispatch('search', $event.target.value)" />
-            <!-- <i v-if = "cb == true || searchingR.length > 0 || !more" class="fa fa-search input-icon"></i><i v-else class="fas fa-spinner input-icon __l_api"></i> -->
+            <i v-if = "$store.state.query.length == 0 || $store.state.server" class="fa fa-search input-icon"></i><i v-else class="fas fa-spinner input-icon __l_api"></i>
+              <button @click="filter = true, $bvModal.show('modal-filter')" style="position: absolute; top: -.25em; right: -3.125em;" class="btn btn-primary"><i class="fa fa-filter" aria-hidden="true"></i></button>
           </div>
 
           <!-- <p>{{$store.state.query}}</p>         -->
@@ -32,12 +34,15 @@
             </div>
           </div>
 
+
+
         </nav>
       </div>
       <cover />
     </div>
     <div class="mt-auto">
       <list />
+      <filtering v-if="filter"/>
     </div>
     <Nuxt />
   </div>
@@ -52,8 +57,18 @@ export default {
   mixins: [functions],
   data(){
     return{
-      load: false
+      load: false,
+      filter: false
     }
+  },
+  watch:{
+    filter(){
+      if(!this.filter) window.history.pushState("", "/filter")
+    }
+  },
+
+  mounted(){
+      this.$root.$on("closeFilter",e => this.filter = false)
   }
 
 }

@@ -34,7 +34,7 @@
                             </div>
                             <div class="col-12 col-sm-7 offset-0 d-flex flex-column justify-content-between film-short-info">
                                 <div class="flex-column m-2">
-                                    <h4 class="f-sh-i-title" v-html = '$store.getters.highlight($store.getters.nameFilm($store.getters.films[$store.state.selected]))'></h4>
+                                    <h4 class="f-sh-i-title" v-html = 'getTitle()'></h4>
                                     <p class="f-sh-i-texts">{{$store.getters.films[$store.state.selected].p_year}}  | <i class="fab fa-imdb pr-1"></i>{{$store.getters.films[$store.state.selected].rating}}  
                                       <template v-if="!/\-\d+/.test($store.getters.films[$store.state.selected].genre)"> | 
                                         <span class="_g_l_item" v-for = "(genre, i) in $store.getters.films[$store.state.selected].genre.split(',')" :key="i">
@@ -57,7 +57,7 @@
                                                   </div>
 
 
-                                    <p class="f-sh-i-texts" v-html = '$store.getters.highlight($store.getters.nameFilm($store.getters.films[$store.state.selected], 2))'></p>
+                                    <p class="f-sh-i-texts" v-html = 'getContent()'></p>
                                 </div>
                             </div>
                         </div>
@@ -87,6 +87,18 @@ export default {
   data(){
     return{
       // film: this.$store.getters.films[this.$store.state.selected]
+    }
+  },
+
+  methods:{
+    getContent(){
+        const e = this.$store.getters.highlight(this.$store.getters.nameFilm(this.$store.getters.films[this.$store.state.selected], 2))
+        return e;
+    },
+
+    getTitle(){
+        const e = this.$store.getters.highlight(this.$store.getters.nameFilm(this.$store.getters.films[this.$store.state.selected]));
+        return e;
     }
   }
 }
