@@ -190,7 +190,7 @@ export const functions = {
         async GetFilms(g, c, d, y, r, p, m, type, log, s){
             this.load = true;
 
-            await axios_.post(config_.url + 'index.php', qs.stringify({g: g.join(","), c: c.join(","), y: y.join(","), d: d.join(","), r: r, p: p, m: m, type:type, 'log':log, s:s})).then(
+            await axios_.post(config_.url + 'api.php', qs.stringify({g: g.join(","), c: c.join(","), y: y.join(","), d: d.join(","), r: r, p: p, m: m, type:type, 'log':log, s:s})).then(
 
               response => 
               { 

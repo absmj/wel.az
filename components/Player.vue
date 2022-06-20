@@ -15,7 +15,7 @@
                     <router-link to = "/"><i @click = " __close_m()" class="text-white fas fa-times icn-close" style="right:3px; top:4px; font-size: 1.2em; z-index: 180"></i></router-link>
                     
                     <!-- Video Element -->
-                    <video  v-if = "src != null" id="videoElement" @loadedmetadata = "LoadVideo" @canplay="autoplay()" @canplaythrough = "loading = false" @playing="updatePaused" @pause="updatePaused" @onpause = "examming === 1 ? blur = 'blurred' : false" @timeupdate="Progress" :class = "blur" @loading = "loading = true" @waiting = "loading = true" @seeked="loading = false" @seeking = "loading = true" style="width:100%; height: 100%; transition: .95s" :src = "src" autoplay preload="auto" type="video/mp4" @ended = "exam.type === 0 ? examming = 1 : false, examming === 1 ? blur = 'blurred' : __close_m()"></video>
+                    <video  v-if = "src != null" id="videoElement" @loadedmetadata = "LoadVideo" @canplaythrough = "loading = false" @playing="updatePaused" @pause="updatePaused" @onpause = "examming === 1 ? blur = 'blurred' : false" @timeupdate="Progress" :class = "blur" @loading = "loading = true" @waiting = "loading = true" @seeked="loading = false" @seeking = "loading = true" style="width:100%; height: 100%; transition: .95s" :src = "src" autoplay preload="auto" type="video/mp4" @ended = "exam.type === 0 ? examming = 1 : false, examming === 1 ? blur = 'blurred' : __close_m()"></video>
 
                     <!-- Exam Element -->
                     <div v-if = "exam.question != '' && examming == 1 && videoElement.paused == true">
@@ -263,7 +263,7 @@
     </div>
 </template>
 <script>
-// import config from '../config.json'
+import {host} from '/config.js'
 import Exam from '../components/Exam.vue'
 import {functions} from '@/mixins.js'
 import {mapState, mapGetters} from 'vuex'
@@ -278,7 +278,7 @@ export default {
   },
   mixins: [functions],
   // props: ["film", "src", "lang[$store.state.language]_", "lang[$store.state.language]", "sub", "dubb", "type"],
-  props: ["film", "type"],
+  props: ["type", "film"],
   data(){
     return{
                 src: null,
@@ -427,7 +427,7 @@ export default {
 
       Loadsrt() {
             axios
-                    .post(config.url + 'index.php', qs.stringify({'lng': (this.type === 2 ? this.lng_s + '/' + this.film.episode : this.lng_s), 'v_id': this.film.id}))
+                    .post(config.url + '/api.php', qs.stringify({'lng': (this.type === 2 ? this.lng_s + '/' + this.film.episode : this.lng_s), 'v_id': this.film.id}))
                     .then(response => (response.data != 0 ? this.subtitle.srt = response.data.srt : this.subtitle.srt = null));
 
             
@@ -459,7 +459,7 @@ export default {
           this.word = event.target.innerHTML.toLowerCase();
           // alert(this.word);
           axios
-                    .post(config.url + 'index.php', qs.stringify({'from': this.lng_f, 'lng': this.lng_t, 'a_s': 0, w: this.word.replace(/\s|\.|\r|\n|"|\*|\$/gi, "")}))
+                    .post(config.url + '/api.php', qs.stringify({'from': this.lng_f, 'lng': this.lng_t, 'a_s': 0, w: this.word.replace(/\s|\.|\r|\n|"|\*|\$/gi, "")}))
                     .then(response => {this.translated = response.data, this.videoElement.pause()});
 
             
@@ -499,12 +499,13 @@ export default {
           
       },
 
-      async play() {
-        await this.videoElement.play();
+      play() {
+        this.videoElement.play();
         this.paused = false;
         this.s_d_panel = false;
         this.stg_panel = false;
       },
+
       pause() {
 
         this.videoElement.pause();
@@ -615,7 +616,7 @@ export default {
             {
 
                     this.$axios
-                    .$post(config.url + 'api/exam/index.php', qs.stringify({'s': this.film.id, 't': this.exam.from, 'f': this.exam.to, 's_t': this.film.exam[this.e_step], 'e_t': this.film.exam[this.e_step + 1], 'sub': (this.type === 2 ? (this.sub !== null ? 1 : 0) : (this.film.srt.length > 0 ? 1 : 0))}))
+                    .$post(host + 'api/exam/index.php', qs.stringify({'s': this.film.id, 't': this.exam.from, 'f': this.exam.to, 's_t': this.film.exam[this.e_step], 'e_t': this.film.exam[this.e_step + 1], 'sub': (this.type === 2 ? (this.sub !== null ? 1 : 0) : (this.film.srt.length > 0 ? 1 : 0))}))
                     .then(response => (this.exam.question = response.data.Exams));
 
             },
@@ -655,9 +656,7 @@ export default {
             },
 
             __close_m(){
-              this.title.textContent = 'Əsas səhifə | wel! - watch, enjoy, learn';
-              this.desc.setAttribute("content", 'watch!, enjoy, learn! şüarı ilə hazırlanan bu layihənin əsas məqsədi filmlər seyr edərkən hər hansı xarici dilin öyrənilməsidir')
-              this.$root.$emit("plyr_visible", false);
+              this.$root.$emit("player", false);
               this.$refs["mdl"].hide(() => delete this.videoElement);
               
             },
@@ -686,8 +685,7 @@ export default {
     async mounted(){
 
       this.$bvModal.show('modal-center');
-      console.log(this.$store.state.film);
-      let e = await this.$store.getters.nameFilm(this.$store.state.film, 3, true);
+      let e = await this.$store.getters.nameFilm(this.film, 3, true);
       e = e.split("_")
       this.src = "http://cdn"+e[0]+".video.az/storage/" + (this.type == 2 ? "episode/" : "movie/") + e[1]+"video.mp4";
       this.lng_t = this.lng_; this.exam.to = this.lng_; 

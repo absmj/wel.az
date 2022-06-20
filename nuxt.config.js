@@ -1,4 +1,5 @@
 export default {
+  target: 'static',
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'wel',
@@ -56,18 +57,18 @@ export default {
   ],
 
   axios: {
-    baseURL: 'http://localhost/index.php', // Used as fallback if no runtime config is provided
+    baseURL: '/api.php', // Used as fallback if no runtime config is provided
   },
 
   publicRuntimeConfig: {
     axios: {
-      browserBaseURL: 'http://localhost/index.php'
+      browserBaseURL: '/api.php'
     }
   },
 
   privateRuntimeConfig: {
     axios: {
-      baseURL: 'http://localhost/index.php'
+      baseURL: '/api.php'
     }
   },
 

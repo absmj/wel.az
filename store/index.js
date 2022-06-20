@@ -1,6 +1,7 @@
   import {lang} from '/lang.js'
+  import {host} from '/config.js'
   const qs = require("qs")
-  const host = '';
+
 
   export const state = () => ({
     component: null,
@@ -25,7 +26,7 @@
 
       const films = state.query.length > 0 ?
                         await this.$axios.$post(`${host}/search.php`, qs.stringify({s: state.query, m: data[0], mx: data[1], type: 1})) :
-                        await this.$axios.$post(`${host}/index.php`, qs.stringify({...state.filter, p:data[0], m: data[1], type: 1, s: 1}))
+                        await this.$axios.$post(`${host}/api.php`, qs.stringify({...state.filter, p:data[0], m: data[1], type: 1, s: 1}))
       commit('setServer', true)
       commit('setFirstAsk', state.firstAsk !== null)
       commit('resultCount', films.length)

@@ -43,6 +43,7 @@
     <div class="mt-auto">
       <list />
       <filtering v-if="filter"/>
+      <Player v-if="player" type="1" :film = "$store.state.films[$store.state.selected]"/>
     </div>
     <Nuxt />
   </div>
@@ -58,7 +59,8 @@ export default {
   data(){
     return{
       load: false,
-      filter: false
+      filter: false,
+      player: false
     }
   },
   watch:{
@@ -69,6 +71,7 @@ export default {
 
   mounted(){
       this.$root.$on("closeFilter",e => this.filter = false)
+      this.$root.$on('player', e => this.player = e)
   }
 
 }

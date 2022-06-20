@@ -15,7 +15,7 @@
                                     
                                       <div class="d-flex _pstr_on_">
                                         <nuxt-link :to="'/player/' + $store.getters.films[$store.state.selected].id">
-                                          <i v-on:click= "mfv = false, s = $store.getters.films[$store.state.selected].cat == '2', $store.getters.films[$store.state.selected].cat == '2' ? GetEpisodes($store.getters.films[$store.state.selected].season == '1' ? $store.getters.films[$store.state.selected].season : $store.getters.films[$store.state.selected].season - 1, GetFilmName($store.getters.films[$store.state.selected].name, 'name', lang), $store.getters.films[$store.state.selected]) : GetFilm($store.getters.films[$store.state.selected], 1, lang, 'az')" class="_pstr_on_i fas fa-play"></i>
+                                          <i v-on:click= "mfv = false, s = $store.getters.films[$store.state.selected].cat == '2', $store.getters.films[$store.state.selected].cat == '2' ? GetEpisodes($store.getters.films[$store.state.selected].season == '1' ? $store.getters.films[$store.state.selected].season : $store.getters.films[$store.state.selected].season - 1, GetFilmName($store.getters.films[$store.state.selected].name, 'name', lang), $store.getters.films[$store.state.selected]) : GetFilm($store.getters.films[$store.state.selected], 1, lang, 'az'), $root.$emit('player', true)" class="_pstr_on_i fas fa-play"></i>
                                         </nuxt-link>
                                       </div>
                                     
