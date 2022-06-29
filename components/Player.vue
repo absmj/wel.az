@@ -5,17 +5,17 @@
                 <div id = "player" class="d-flex flex-column player">
 
                     <!-- Preload -->
-                    <div class="loading" v-if = "loading == true">
+<!--                     <div class="loading" v-if = "loading == true">
                         <div class="ls img-fluid">
                             <i class = "fas fa-spinner __l_api text-white"></i>
                         </div>
-                    </div>
+                    </div> -->
                     
                     <!-- Close button -->
                     <router-link to = "/"><i @click = " __close_m()" class="text-white fas fa-times icn-close" style="right:3px; top:4px; font-size: 1.2em; z-index: 180"></i></router-link>
                     
                     <!-- Video Element -->
-                    <video  v-if = "src != null" id="videoElement" @loadedmetadata = "LoadVideo" @canplaythrough = "loading = false" @playing="updatePaused" @pause="updatePaused" @onpause = "examming === 1 ? blur = 'blurred' : false" @timeupdate="Progress" :class = "blur" @loading = "loading = true" @waiting = "loading = true" @seeked="loading = false" @seeking = "loading = true" style="width:100%; height: 100%; transition: .95s" :src = "src" autoplay preload="auto" type="video/mp4" @ended = "exam.type === 0 ? examming = 1 : false, examming === 1 ? blur = 'blurred' : __close_m()"></video>
+                    <video v-show = "src != null" ref="videoPlayer" class="video-js"></video>
 
                     <!-- Exam Element -->
                     <div v-if = "exam.question != '' && examming == 1 && videoElement.paused == true">
@@ -23,88 +23,7 @@
                     </div>
                             
                     <!-- Controls -->
-                    <div v-else id="m-pnl" style="z-index: 2">
-                        <div id="shadow" class="c-shadow"  @mousemove = "shadow=1" :style = "{'opacity': shadow }" @mouseout = "LeftMouse">
-                            <template v-if = "blur == '' && videoElement != null">  
-                                <div class="d-flex flex-column justify-content-center align-items-center flex-nowrap flex-sm-row flex-sm-wrap justify-content-lg-start up-panel">
-
-                                    
-
-    <!--                                   <div class="d-flex ml-sm-auto"><button class="btn u-p-btn-style" type="button"><i class="icon-like u-s-btn-text"></i><span class="u-s-btn-text">417</span></button><button class="btn u-p-btn-style" type="button"><i class="icon-dislike"></i></button>
-                                        <button
-                                            class="btn u-p-btn-style" type="button"><i class="icon-eye"></i></button>
-                                    </div> -->
-
-
-                                    </div>
-
-                                    <div class="d-flex flex-column flex-nowrap v-controls" style="z-index: 15">
-                                        <div class="d-flex flex-column justify-content-center v-c-progress">
-                                            <progress min="0" max="100" class="v-c-p__a" :value = "(videoElement.currentTime / videoElement.duration) * 100" @click="ChangeProgress"></progress>
-
-                                            <template v-if="exam.type===1">
-                                                <div v-for="(e, i) in film.examD" :key = "i">
-                                                    <i @click="getExam(i)" class="fas fa-dot-circle text-white" style="color: red!important; position: absolute; top: -3%" :style = "{'left': Math.floor(e-3)+ '%'}"></i>
-                                                </div>
-                                            </template>
-
-                                    </div>
-
-                                    <div class="d-flex justify-content-between v-c-menu text-white">
-                                        <div class="d-flex v-c-m-left">
-                                            <div class="d-flex align-items-center v-c-btn">
-                                                <i v-if = "videoElement != null && videoElement.paused == 1" class="fas fa-play" @click="play"></i>
-                                                <i v-else-if = "videoElement != null && videoElement.paused == 0" class="fas fa-pause" @click="pause"></i>
-                                            </div>
-                                            <div v-if="loading != null" class="d-flex align-items-center v-c-m-time">
-                                                <span>{{status}}/</span>
-                                                <span>{{duration}}</span>
-                                            </div>
-                                            <div v-else class="d-flex align-items-center v-c-m-time">
-                                                <span>{{lang[$store.state.language].loading}}</span>
-                                            </div>
-                                        </div>
-
-                                        <div class="d-flex align-items-center v-c-m-left">
-                                            <div class="d-flex v-c-btn">
-
-                                                <div class="d-block visible v-c-m-contoller" id="s-c-panel" :style="{'transform': 'scaleY('+vlP+')'}">
-                                                    <div class = "v-l-main" @click = "changeVolume" ref="vlmCon">
-                                                    <div class="v-l-dec"></div>
-                                                    <div class="v-l-act" :style='{ "height": volume + "px" }'></div>
-                                                    </div>
-                                                </div>
-
-                                                <i v-on:click = "vlP = vlP == 1 ? 0 : 1" class="fas fa-volume-up" id="sound-controller"></i>
-                                                </div>
-
-                                            <div v-if = "film.srt != ''" class="d-flex justify-content-center v-c-btn" @click="s_d_panel = s_d_panel==true ? false : true; translated = null; notice = null; stg_panel = false; play;"><i class="fas fa-indent" id="srt_delay"></i>
-                                            </div>
-
-                                            <div class="d-flex justify-content-center v-c-btn" @click="s_d_panel=false, translated = null, notice = null, stg_panel = stg_panel== true ? false : true, stg_panel == false  ? play() : pause(), videoElement.paused == 0 ? stg_panel = false : stg_panel = true"><i class="fas fa-cog controller" id="settings"></i>
-                                            </div>
-
-
-                                            <div v-if="fullscreen==false">
-                                                <div class="d-flex v-c-btn" @click = "openFullscreen"><i class="fas fa-window-maximize"></i></div>
-                                            </div>
-                                            <div v-else>
-                                                <div class="d-flex v-c-btn" @click = "closeFullscreen"><i class="fas fa-window-minimize"></i></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </template>
-                        </div>
-
-                        <!-- Subtitr -->
-                        <div v-if = "examming == 0 && notice == null" style = "width: 100%; position:absolute; bottom:0; display: flex; justify-content: center;">
-                            <div v-if = "subtitle.sentences != ''" class="subtitle">
-                                <span @click = "translate" variant="outline-success" v-for = "(swords, index) in subtitle.sentences" :key = "index" :id = "index" ref="tooltip" class="a" style="cursor: pointer"> {{swords}} </span>
-                            </div> 
-                        </div>
-
-                    </div>
+                   
 
                     <template>
                           <!--Subtitrlərin sinxronizasiyası -->
@@ -267,6 +186,8 @@ import {host} from '/config.js'
 import Exam from '../components/Exam.vue'
 import {functions} from '@/mixins.js'
 import {mapState, mapGetters} from 'vuex'
+import videojs from 'video.js';
+import 'video.js/dist/video-js.css';
 
 let qs = require('qs')
 
@@ -282,6 +203,7 @@ export default {
   data(){
     return{
                 src: null,
+                player: null,
                 videoElement: null,
                 paused: null,
                 status: null,
@@ -419,8 +341,6 @@ export default {
 
         if(this.exam.status && this.exam.type === 1) this.GetExamPoints();
 
-        setTimeout(() => this.MakingExamPoints(), 5000);
-
 
         
       },
@@ -557,12 +477,15 @@ export default {
 
       ChangeProgress(event){
         let prgwidth = event.target.offsetWidth || false;
+        
         if(prgwidth !== false)
         {
+
           this.progress = (event.offsetX / prgwidth) * this.videoElement.duration;
-          this.videoElement.currentTime = this.progress;
+          this.videoElement.currentTime = "2.4";
+          console.log(this.videoElement.currentTime)
         }
-        event.preventDefault();
+
       },
 
       openFullscreen() {
@@ -616,8 +539,8 @@ export default {
             {
 
                     this.$axios
-                    .$post(host + 'api/exam/index.php', qs.stringify({'s': this.film.id, 't': this.exam.from, 'f': this.exam.to, 's_t': this.film.exam[this.e_step], 'e_t': this.film.exam[this.e_step + 1], 'sub': (this.type === 2 ? (this.sub !== null ? 1 : 0) : (this.film.srt.length > 0 ? 1 : 0))}))
-                    .then(response => (this.exam.question = response.data.Exams));
+                    .$post(host + '/api/exam/index.php', qs.stringify({'s': this.film.id, 't': this.exam.from, 'f': this.exam.to, 's_t': this.film.exam[this.e_step], 'e_t': this.film.exam[this.e_step + 1], 'sub': (this.type === 2 ? (this.sub !== null ? 1 : 0) : (this.film.srt.length > 0 ? 1 : 0))}))
+                    .then(response => (this.exam.question = response.Exams));
 
             },
 
@@ -682,15 +605,39 @@ export default {
       }
     },
 
-    async mounted(){
+    mounted(){
 
       this.$bvModal.show('modal-center');
-      let e = await this.$store.getters.nameFilm(this.film, 3, true);
+      let e = this.$store.getters.nameFilm(this.film, 3, true);
       e = e.split("_")
       this.src = "http://cdn"+e[0]+".video.az/storage/" + (this.type == 2 ? "episode/" : "movie/") + e[1]+"video.mp4";
-      this.lng_t = this.lng_; this.exam.to = this.lng_; 
+      // this.src = "http://localhost/1.mp4"
+      this.lng_t = this.lng_; this.exam.to = this.lng_;
+      this.$nextTick(()=>{
+        this.player = videojs(this.$refs.videoPlayer, 
+            {
+                autoplay: true,
+                controls: true,
+                sources: [
+                  {
+                    src:
+                      this.src,
+                      type: 'video/mp4'
+                  }
+                ]
+            }, () => {
+                this.player.log('onPlayerReady', this);
+          });
+      });
+      // console.log(this.$refs['videoPlayer'])
+      // 
 
+    },
 
+    beforeDestroy() {
+        if (this.player) {
+          this.player.dispose();
+        }
     },
 
     updated(){
@@ -1058,6 +1005,18 @@ progress[value]::-webkit-progress-value{
   align-items: center;
   position: absolute;
   z-index: 1;
+}
+
+.player{
+    height: 100%;
+    width: 100%;
+}
+
+.video-js{
+    width: 100%;
+    height: 100%;
+    max-width: inherit!important;
+    max-height: inherit!important;
 }
 
 

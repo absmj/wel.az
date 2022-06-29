@@ -5,7 +5,7 @@
     <div class="container">
       <div class="row p-0 m-0">
         <nav class="col-12 d-flex flex-column justify-content-center flex-lg-row p-0 m-0 justify-content-lg-between nav navbar">
-          <img class="img-fluid" src='img/logo.svg' style="width: 75px; filter: invert(100%); transform: 1s">
+          <img class="img-fluid" src='/img/logo.svg' style="width: 75px; filter: invert(100%); transform: 1s">
                     <!-- Filter -->
           
           <!-- Axtarış -->

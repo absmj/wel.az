@@ -16,5 +16,7 @@
     "core-js": "^3.15.1",
     "nuxt": "^2.15.7"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "video.js": "^7.19.2"
+  }
 }
