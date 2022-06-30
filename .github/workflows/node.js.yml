@@ -16,7 +16,7 @@ jobs:
     - name: Building the project
       run: npm run build
     - name: Generating
-      run: npm run generating
+      run: npm run generate
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@4.0.0
       with:
