@@ -30,14 +30,14 @@
       commit('setServer', true)
       commit('setFirstAsk', state.firstAsk !== null)
       commit('resultCount', films.length)
-      console.log(films)
+      // console.log(films)
       films.length > 0 && commit('setFilms', films)
     },
 
 
     async getFilm({commit}, id){
       const film = await this.$axios.$get(`${host}/films.php?id=${id}`);
-      console.log(film)
+      // console.log(`${host}/films.php?id=${id}`);
       commit('setFilm', film[0]);
     },
 
@@ -86,6 +86,10 @@
 
     resetFilter({commit}){
         commit('resFilter')
+    },
+
+    firstAsk({commit}, data){
+      commit('setFirstAsk', data)
     }
   }
 

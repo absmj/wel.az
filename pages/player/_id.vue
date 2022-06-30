@@ -40,6 +40,7 @@ export default ({
         let id = params.id, film;
         if(store.state.films.length == 0){
             await store.dispatch("getFilm", id)
+            await store.dispatch("getFilms")
             film = await store.state.film;
 
         }
@@ -51,7 +52,7 @@ export default ({
     },
 
     async created(){
-        await this.$store.dispatch("getFilms")
+        
     }
 })
 </script>

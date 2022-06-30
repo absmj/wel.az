@@ -24,7 +24,7 @@
                                   <div class="l-list">
                                         <div v-if="!/\-\d+/.test($store.getters.films[$store.state.selected].country)" class="d-flex justify-content-center flex-wrap test"><i class="fas fa-globe-americas icn-pad text-white"></i>
                                           <p class="_g_l_item" v-for = "(country, i) in $store.getters.films[$store.state.selected].country.split(',')" :key="i"><template v-if="i != 0">, </template>
-                                          <nuxt-link :to = "'/filter/' + country + '-c'">
+                                          <nuxt-link :to = "'/filter/' + JSON.stringify(f)">
                                             <span @click="$store.dispatch('filter', [country, 2])">{{lang[$store.state.language].countries[country]}}</span>
                                           </nuxt-link>
                                           </p>
@@ -99,7 +99,10 @@ export default {
     getTitle(){
         const e = this.$store.getters.highlight(this.$store.getters.nameFilm(this.$store.getters.films[this.$store.state.selected]));
         return e;
-    }
+    },
+    base64(text){
+        return btoa(text)
+    },
   }
 }
 </script>
