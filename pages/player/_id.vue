@@ -41,17 +41,17 @@ export default ({
         if(store.state.films.length == 0){
             await store.dispatch("getFilm", id)
             await store.dispatch("getFilms")
-            film = await store.state.film;
-
         }
-        else
-            film = await store.state.films.filter(v=>v.id==id)[0]
+
+        film = store.state.film;
+        // else
+        //     film = await store.state.films.filter(v=>v.id==id)[0]
 
     // "film", "src", "lng_", "lng", "sub", "dubb", "type"
         return {film}
     },
 
-    async created(){
+    async mounted(){
         
     }
 })

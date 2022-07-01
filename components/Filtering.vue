@@ -246,12 +246,12 @@ export default {
 
       countries: function(){
         this.link = this.countries.length > 0 ?  ('/' + this.lang[this.$store.state.language].country + '/' + this.countries.map((v) => this.lang[this.$store.state.language].countries[v])) : ''
-        this.f.c = this.countries.map((v)=>{return Number(v) + 1})
+        this.f.c = this.countries.map((v)=>{return Number(v)})
       },
 
       genres: function(){
         this.link = this.genres.length > 0 ?  ('/' + this.lang[this.$store.state.language].genre + '/' + this.genres.map((v) => this.lang[this.$store.state.language].genres[v])) : ''
-        this.f.g = this.genres.map((v)=>{return Number(v) + 1})
+        this.f.g = this.genres.map((v)=>{return Number(v)})
       },
 
       dubbing: function(){

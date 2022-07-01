@@ -43,7 +43,7 @@
     <div class="mt-auto">
       <list />
       <filtering v-if="filter"/>
-      <Player v-if="player" type="1" :film = "$store.state.films[$store.state.selected]"/>
+<!--       <Player v-if="player" type="1" :film = "$store.state.films[$store.state.selected]"/> -->
     </div>
     <Nuxt />
   </div>

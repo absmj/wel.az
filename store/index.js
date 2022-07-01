@@ -41,6 +41,10 @@
       commit('setFilm', film[0]);
     },
 
+    setFilmById({commit}, data){
+      commit('setFilm', data)
+    },
+
     setFilmByAsync({commit}, data){
       commit('setFilms', data)
     },
@@ -184,7 +188,7 @@
       highlight: state =>  (text = '') => {
         let query = state.query.replace(/(\[|\]|\{|\}|\.|\?|\||&|\^|\$|\(|\))/gmi, "\\\\" + "$1"),
             r = new RegExp('(^' + query + '|'+query+')', "gmi");
-        console.log(text);
+        // console.log(text);
         if(r.test(text))
           return text.toString().replace(r, '<span style="background-color:yellow; color:red">$1</span>') || '';
         else

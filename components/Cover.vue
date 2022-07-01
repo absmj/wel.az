@@ -15,7 +15,7 @@
                                     
                                       <div class="d-flex _pstr_on_">
                                         <nuxt-link :to="'/player/' + $store.getters.films[$store.state.selected].id">
-                                          <i v-on:click= "mfv = false, s = $store.getters.films[$store.state.selected].cat == '2', $store.getters.films[$store.state.selected].cat == '2' ? GetEpisodes($store.getters.films[$store.state.selected].season == '1' ? $store.getters.films[$store.state.selected].season : $store.getters.films[$store.state.selected].season - 1, GetFilmName($store.getters.films[$store.state.selected].name, 'name', lang), $store.getters.films[$store.state.selected]) : GetFilm($store.getters.films[$store.state.selected], 1, lang, 'az'), $root.$emit('player', true)" class="_pstr_on_i fas fa-play"></i>
+                                          <i v-on:click= "mfv = false, s = $store.getters.films[$store.state.selected].cat == '2', $store.getters.films[$store.state.selected].cat == '2' ? GetEpisodes($store.getters.films[$store.state.selected].season == '1' ? $store.getters.films[$store.state.selected].season : $store.getters.films[$store.state.selected].season - 1, GetFilmName($store.getters.films[$store.state.selected].name, 'name', lang), $store.getters.films[$store.state.selected]) : $store.dispatch('setFilmById', $store.getters.films[$store.state.selected]), $root.$emit('player', true)" class="_pstr_on_i fas fa-play"></i>
                                         </nuxt-link>
                                       </div>
                                     
@@ -24,7 +24,8 @@
                                   <div class="l-list">
                                         <div v-if="!/\-\d+/.test($store.getters.films[$store.state.selected].country)" class="d-flex justify-content-center flex-wrap test"><i class="fas fa-globe-americas icn-pad text-white"></i>
                                           <p class="_g_l_item" v-for = "(country, i) in $store.getters.films[$store.state.selected].country.split(',')" :key="i"><template v-if="i != 0">, </template>
-                                          <nuxt-link :to = "'/filter/' + JSON.stringify(f)">
+                                          <!-- <nuxt-link :to = "'/filter/' + JSON.stringify(f)"> -->
+                                          <nuxt-link :to = "'/filter/'">
                                             <span @click="$store.dispatch('filter', [country, 2])">{{lang[$store.state.language].countries[country]}}</span>
                                           </nuxt-link>
                                           </p>
@@ -39,7 +40,8 @@
                                       <template v-if="!/\-\d+/.test($store.getters.films[$store.state.selected].genre)"> | 
                                         <span class="_g_l_item" v-for = "(genre, i) in $store.getters.films[$store.state.selected].genre.split(',')" :key="i">
                                           <template v-if="i != 0">, </template>
-                                            <nuxt-link :to = "'/filter/' + genre + '-g'">
+                                            <!-- <nuxt-link :to = "'/filter/' + genre + '-g'"> -->
+                                            <nuxt-link :to = "'/filter/'">
                                               <span @click="$store.dispatch('filter', [genre, 1])">{{lang[$store.state.language].genres[genre]}}</span>
                                             </nuxt-link>
                                         </span>
