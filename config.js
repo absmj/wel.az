@@ -1,4 +1,4 @@
-const host = 'http://localhost'
+const host = ''
 
 
 export {host}
