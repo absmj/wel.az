@@ -71,7 +71,7 @@ export const functions = {
                 src = "http://cdn"+e[0]+".video.az/storage/" + (type == 2 ? "episode/" : "movie/") + e[1]+"video.mp4";
 
             
-          console.log(ar);
+          
             document.getElementsByName('title').textContent = 
                 (type ===  1 ? this.GetFilmName(ar.name, "name", code) : name) + 
                 (type == 2 ? (' - '+this.GetFilmName(ar.w_title, 'name', code)||' - ') + ' ' : '') +
@@ -190,7 +190,7 @@ export const functions = {
         async GetFilms(g, c, d, y, r, p, m, type, log, s){
             this.load = true;
 
-            await axios_.post(config_.url + 'index.php', qs.stringify({g: g.join(","), c: c.join(","), y: y.join(","), d: d.join(","), r: r, p: p, m: m, type:type, 'log':log, s:s})).then(
+            await axios_.post(config_.url + 'api.php', qs.stringify({g: g.join(","), c: c.join(","), y: y.join(","), d: d.join(","), r: r, p: p, m: m, type:type, 'log':log, s:s})).then(
 
               response => 
               { 

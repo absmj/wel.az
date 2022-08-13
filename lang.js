@@ -62,7 +62,8 @@ export const lang = {
     "mN": "Bu sahəyə minimum %s simvol daxil edilməlidir",
     "name": "Adınız",
     "text": "Mətn",
-    "contact": "Əlaqə"
+    "contact": "Əlaqə",
+    "moreResult": "Əməliyyat mövcud siyahıya əsasən aparılıb. Daha çox nəticə əldə etmək istəyirsinizmi?"
   },
 
   "en": {

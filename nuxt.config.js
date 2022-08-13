@@ -1,4 +1,5 @@
 export default {
+  target: 'static',
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'wel',
@@ -41,6 +42,7 @@ export default {
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
     '@nuxtjs/fontawesome',
+    '@nuxtjs/google-analytics'
   ],
 
   fontawesome: {
@@ -56,22 +58,26 @@ export default {
   ],
 
   axios: {
-    baseURL: 'http://localhost/index.php', // Used as fallback if no runtime config is provided
+    baseURL: '/api.php', // Used as fallback if no runtime config is provided
   },
 
   publicRuntimeConfig: {
     axios: {
-      browserBaseURL: 'http://localhost/index.php'
+      browserBaseURL: '/api.php'
     }
   },
 
   privateRuntimeConfig: {
     axios: {
-      baseURL: 'http://localhost/index.php'
+      baseURL: '/api.php'
     }
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+  },
+
+  googleAnalytics: {
+    id: 'UA-89955739-1'
   }
 }

@@ -1,27 +1,51 @@
 <template>
-  <p class="text-white">{{g}}</p>
+
 </template>
 
 <script>
 import {mapActions} from 'vuex'
 
-export default {
-    async asyncData({ params, store }){
-        let f_ = params.id.split("-"), g=[], c=[], y = [];
-        console.log(f_);
-        f_.forEach(v=>{
-            let f__ = v.split('-');
-            if(f__[1] == 'g') g = f__[0].split(',');
-            else if(f__[1] == 'c') c = f__[0].split(',');
-            else if(f__[1] == 'd') d = f__[0].split(',');
-        })
+String.prototype._s = function(text){
+    return text && this.replace("%s", text)
+}
 
-        // store.dispatch('filter', {g: g, c: c, y: y})
-        return {g}
+export default {
+    head () {
+        const filter = JSON.parse(this.f_);
+        const genres = filter.g.map(v => this.$store.state.lang[this.$store.state.language].genres[v]).join(', ');
+        const countries = filter.c.map(v => this.$store.state.lang[this.$store.state.language].countries[v]).join(', ');
+
+        return {
+          title: `${[this.$store.state.lang[this.$store.state.language].genresAs._s(genres), this.$store.state.lang[this.$store.state.language].countryAs._s(countries)].join(' və ')}`,
+          meta: [
+            {
+                hid: 'description',
+                name: 'description',
+                // content: this.$store.getters.nameFilm(this.film, 2)
+            }
+          ]
+        }
     },
 
-    created(){
-        
+    async asyncData({ params, store , filter}){
+        let f_ = Buffer.from(params.id, 'base64').toString();
+
+
+        if( /(["'][gcdy]["']\:\[(\d+[,\d+]*)*\])*,(["'][rt]["']\:[\d+]*)*/gmi.test(f_)){
+            await store.dispatch('filtering', JSON.parse(f_))
+
+            store.dispatch('firstAsk', null)
+
+
+            
+        }
+        return {f_}
+
+    },
+
+    async created(){
+        await this.$store.dispatch("getFilms")
+        // window.location.reload();
     }
     
 }

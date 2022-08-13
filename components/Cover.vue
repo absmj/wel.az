@@ -15,7 +15,7 @@
                                     
                                       <div class="d-flex _pstr_on_">
                                         <nuxt-link :to="'/player/' + $store.getters.films[$store.state.selected].id">
-                                          <i v-on:click= "mfv = false, s = $store.getters.films[$store.state.selected].cat == '2', $store.getters.films[$store.state.selected].cat == '2' ? GetEpisodes($store.getters.films[$store.state.selected].season == '1' ? $store.getters.films[$store.state.selected].season : $store.getters.films[$store.state.selected].season - 1, GetFilmName($store.getters.films[$store.state.selected].name, 'name', lang), $store.getters.films[$store.state.selected]) : GetFilm($store.getters.films[$store.state.selected], 1, lang, 'az')" class="_pstr_on_i fas fa-play"></i>
+                                          <i v-on:click= "mfv = false, s = $store.getters.films[$store.state.selected].cat == '2', $store.getters.films[$store.state.selected].cat == '2' ? GetEpisodes($store.getters.films[$store.state.selected].season == '1' ? $store.getters.films[$store.state.selected].season : $store.getters.films[$store.state.selected].season - 1, GetFilmName($store.getters.films[$store.state.selected].name, 'name', lang), $store.getters.films[$store.state.selected]) : $store.dispatch('setFilmById', $store.getters.films[$store.state.selected]), $root.$emit('player', true)" class="_pstr_on_i fas fa-play"></i>
                                         </nuxt-link>
                                       </div>
                                     
@@ -24,8 +24,9 @@
                                   <div class="l-list">
                                         <div v-if="!/\-\d+/.test($store.getters.films[$store.state.selected].country)" class="d-flex justify-content-center flex-wrap test"><i class="fas fa-globe-americas icn-pad text-white"></i>
                                           <p class="_g_l_item" v-for = "(country, i) in $store.getters.films[$store.state.selected].country.split(',')" :key="i"><template v-if="i != 0">, </template>
-                                          <nuxt-link :to = "'/filter/' + country + '-c'">
-                                            <span @click="$store.dispatch('filter', [country, 2])">{{lang[$store.state.language].countries[country]}}</span>
+                                          <!-- <nuxt-link :to = "'/filter/' + JSON.stringify(f)"> -->
+                                          <nuxt-link :to = "'/filter/'">
+                                            <span @click="$store.dispatch('filter', [country, 2])">{{$store.state.lang[$store.state.language].countries[country]}}</span>
                                           </nuxt-link>
                                           </p>
                                         </div>
@@ -34,13 +35,14 @@
                             </div>
                             <div class="col-12 col-sm-7 offset-0 d-flex flex-column justify-content-between film-short-info">
                                 <div class="flex-column m-2">
-                                    <h4 class="f-sh-i-title" v-html = '$store.getters.highlight($store.getters.nameFilm($store.getters.films[$store.state.selected]))'></h4>
+                                    <h4 class="f-sh-i-title" v-html = 'getTitle($store.getters.films[$store.state.selected])'></h4>
                                     <p class="f-sh-i-texts">{{$store.getters.films[$store.state.selected].p_year}}  | <i class="fab fa-imdb pr-1"></i>{{$store.getters.films[$store.state.selected].rating}}  
                                       <template v-if="!/\-\d+/.test($store.getters.films[$store.state.selected].genre)"> | 
                                         <span class="_g_l_item" v-for = "(genre, i) in $store.getters.films[$store.state.selected].genre.split(',')" :key="i">
                                           <template v-if="i != 0">, </template>
-                                            <nuxt-link :to = "'/filter/' + genre + '-g'">
-                                              <span @click="$store.dispatch('filter', [genre, 1])">{{lang[$store.state.language].genres[genre]}}</span>
+                                            <!-- <nuxt-link :to = "'/filter/' + genre + '-g'"> -->
+                                            <nuxt-link :to = "'/filter/'">
+                                              <span @click="$store.dispatch('filter', [genre, 1])">{{$store.state.lang[$store.state.language].genres[genre]}}</span>
                                             </nuxt-link>
                                         </span>
 
@@ -48,16 +50,16 @@
                                       </template>
                                     </p>
 
-                                                  <div v-if = "t === 1" class="d-flex justify-content-start flex-wrap test">
-                                                    <p class="_g_l_item" v-for = "(dubbing, r) in GetDubbing($store.getters.films[$store.state.selected])" :key="r"><button class = 'btn btn-i-l act'>{{lang[$store.state.language].langs[dubbing]}}</button></p>
+                                                  <div v-if = "$store.state.type === 1" class="d-flex justify-content-start flex-wrap test">
+                                                    <p class="_g_l_item" v-for = "(dubbing, r) in GetDubbing($store.getters.films[$store.state.selected])" :key="r"><button class = 'btn btn-i-l act'>{{$store.state.lang[$store.state.language].langs[dubbing]}}</button></p>
                                                   </div>
 
                                                   <div v-else class="d-flex justify-content-start flex-wrap test">
-                                                    <p class="_g_l_item" v-for = "(dubbing, r) in $store.getters.films[$store.state.selected].dubbing.split(',')" :key="r"><button @click = "btnAct = true, $root.$emit('filter', [dubbing, 2])" :class="btnAct == true ? 'btn btn-i-l act' : 'btn btn-i-l'">{{lang[$store.state.language].langs[dubbing]}}</button></p>
+                                                    <p class="_g_l_item" v-for = "(dubbing, r) in $store.getters.films[$store.state.selected].dubbing.split(',')" :key="r"><button @click = "btnAct = true, $root.$emit('filter', [dubbing, 2])" :class="btnAct == true ? 'btn btn-i-l act' : 'btn btn-i-l'">{{$store.state.lang[$store.state.language].langs[dubbing]}}</button></p>
                                                   </div>
 
 
-                                    <p class="f-sh-i-texts" v-html = '$store.getters.highlight($store.getters.nameFilm($store.getters.films[$store.state.selected], 2))'></p>
+                                    <p class="f-sh-i-texts" v-html = 'getContent($store.getters.films[$store.state.selected])'></p>
                                 </div>
                             </div>
                         </div>
@@ -72,6 +74,9 @@
                     <div class="sh"></div>
                 </div>
             </div>
+    </div>
+    <div v-else style="height: 50vh" class="d-flex justify-content-center align-items-center">
+      <div class="alert alert-warning text-center">No result</div>
     </div>
 </template>
 
@@ -88,6 +93,21 @@ export default {
     return{
       // film: this.$store.getters.films[this.$store.state.selected]
     }
+  },
+
+  methods:{
+    getContent(t){
+        const e = this.$store.getters.highlight(this.$store.getters.nameFilm(t, 2))
+        return e;
+    },
+
+    getTitle(t){
+        const e = this.$store.getters.highlight(this.$store.getters.nameFilm(t));
+        return e;
+    },
+    base64(text){
+        return btoa(text)
+    },
   }
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  
+  <!-- <p class="text-white">{{films}}</p> -->
 </template>
 
 <script>
@@ -8,16 +8,16 @@ const qs = require('qs');
 // import {mapActions} from "vuex"
 
 export default {
-  // async asyncData({$axios, store}){
-  //   const films = await $axios.$post('http://localhost/index.php', qs.stringify({g: '', c: '', r: '', y: '', p:1, m: 20, type: 1, s: 1}))
+  async asyncData({store}){
+    await store.dispatch("getFilms")
+  },
 
-  //   store.dispatch("setFilmByAsync", films) 
-
-  //   return { films }
-  // },
+  async mounted(){
+  	// console.log(films)
+  },
 
   async created(){
-  	await this.$store.dispatch("getFilms")
+
   }
 }
 </script>

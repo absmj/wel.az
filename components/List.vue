@@ -1,7 +1,7 @@
  
 <template>
 
-  <div style="position: relative;" class="d-flex flex-nowrap justify-content-around align-items-center" v-if="$store.getters.films.length > 0">
+  <div v-if="$store.getters.films.length > 0" style="position: relative;" class="d-flex flex-nowrap justify-content-around align-items-center">
     <div @mouseover = "lScr = 1" @mouseleave = "lScr = 0" class="d-none d-md-block o-ctrl-btn">
       <i class="fas fa-angle-left" @click = "swipeLeft"></i>
     </div> 
@@ -37,7 +37,7 @@
 
 
 <script>
-
+import {functions} from '@/mixins.js'
 import {mapActions, mapGetters} from 'vuex'
 
 export default {
@@ -46,18 +46,16 @@ export default {
       load: false
     }
   },
-
+  mixins: [functions],
   computed: {
       ...mapGetters({
           films: 'films'
         },
       )
   },
-
   watch:{
       films(){
-          if(this.films.length < 20 && !this.$store.state.server)
-              this.$store.dispatch('getFilms');    
+          if(this.films.length < 20 && !this.$store.state.server) this.$store.dispatch('getFilms');    
       },
       deep: true
   },
