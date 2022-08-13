@@ -608,7 +608,7 @@ export default {
     mounted(){
 
       this.$bvModal.show('modal-center');
-      let e = this.$store.getters.nameFilm(this.film, 3, true);
+      let e = this.$store.getters.nameFilm(this.$store.state.film, 3, true);
       e = e.split("_")
       this.src = "http://cdn"+e[0]+".video.az/storage/" + (this.type == 2 ? "episode/" : "movie/") + e[1]+"video.mp4";
       // this.src = "http://localhost/1.mp4"

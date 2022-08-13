@@ -6,7 +6,7 @@
   export const state = () => ({
     component: null,
     films: [],
-    film: {},
+    film: null,
     lang: lang,
     series: [],
     type: 1,
@@ -18,26 +18,31 @@
     query: '',
     askAgain: false,
     firstAsk: null,
-    result: 0
+    searchLoading: false
   })
   
   export const actions = {
     async getFilms({commit, state}, data = [1, 20]){
+      commit('setSearchLoading', true)
 
       const films = state.query.length > 0 ?
                         await this.$axios.$post(`${host}/search.php`, qs.stringify({s: state.query, m: data[0], mx: data[1], type: 1})) :
                         await this.$axios.$post(`${host}/api.php`, qs.stringify({...state.filter, p:data[0], m: data[1], type: 1, s: 1}))
+      
+      commit('setSearchLoading', false)
+
+      // console.log(films)
       commit('setServer', true)
       commit('setFirstAsk', state.firstAsk !== null)
       commit('resultCount', films.length)
       // console.log(films)
-      films.length > 0 && commit('setFilms', films)
+      commit('setFilms', films)
     },
 
 
     async getFilm({commit}, id){
       const film = await this.$axios.$get(`${host}/films.php?id=${id}`);
-      // console.log(`${host}/films.php?id=${id}`);
+      console.log(`${host}/films.php?id=${id}`);
       commit('setFilm', film[0]);
     },
 
@@ -98,6 +103,10 @@
   }
 
   export const mutations = {
+
+    setSearchLoading(state, data){
+      state.searchLoading = data
+    },
 
     setServer(state, data){
         state.server = data
@@ -166,7 +175,7 @@
       },
 
       films(state, commit){
-        if(Object.values(state.filter).filter(v=>v.length > 0).length > 0 && !state.server){
+        if(Object.values(state.filter).filter(v=>v.length > 0).length > 0){
             let genre = new RegExp('(\\b' + state.filter.g.join('|') + '\\b)', 'gmi'),
             country = new RegExp('(\\b' + state.filter.c.join('|') + '\\b)', 'gmi'),
             dubbing = new RegExp('(\\b' + state.filter.d.join('|') + '\\b)', 'gmi'),
@@ -175,13 +184,12 @@
             return state.films.filter(v => { return genre.test(v.genre) && country.test(v.country) })
         }
 
-        if(state.query.length > 0 && state.result > 0){
+        if(state.query.length > 0){
             const search = new RegExp(`${state.query.replace(/([\[\]\(\)\'\\\\/\.\?\*\^\$\~])/gm, '\\$1')}`, 'gmi');
-
             return state.films.filter(v => { return (search.test([...Object.values(v.name),...Object.values(v.w_title),...Object.values(v.w_content)])) })
         }
 
-        return state.films;
+        return state.films ?? [];
 
       },
 

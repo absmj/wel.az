@@ -1,7 +1,7 @@
  
 <template>
 
-  <div style="position: relative;" class="d-flex flex-nowrap justify-content-around align-items-center" v-if="$store.getters.films.length > 0">
+  <div v-if="$store.getters.films.length > 0" style="position: relative;" class="d-flex flex-nowrap justify-content-around align-items-center">
     <div @mouseover = "lScr = 1" @mouseleave = "lScr = 0" class="d-none d-md-block o-ctrl-btn">
       <i class="fas fa-angle-left" @click = "swipeLeft"></i>
     </div> 
@@ -53,13 +53,9 @@ export default {
         },
       )
   },
-
   watch:{
       films(){
-          if(this.films.length < 20 && !this.$store.state.server)
-            !this.$store.state.firstAsk ? 
-                                        confirm(this.lang[this.$store.state.language]['moreResult']) && this.$store.dispatch('getFilms') :
-                                        this.$store.dispatch('getFilms');    
+          if(this.films.length < 20 && !this.$store.state.server) this.$store.dispatch('getFilms');    
       },
       deep: true
   },

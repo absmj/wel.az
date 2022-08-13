@@ -1,5 +1,5 @@
 <template>
-    <Player v-if="$store.state.film != null" type="1" :film = "film"/>
+    <Player v-if="$store.state.film != null" type="1"/>
 </template>
 
 <script>
@@ -16,12 +16,12 @@ export default ({
 
     head () {
         return {
-          title: this.$store.getters.nameFilm(this.film, 1) + ' - wel! - watch!, enjoy!, learn!',
+          title: this.$store.getters.nameFilm(this.$store.state.film, 1) + ' - wel! - watch!, enjoy!, learn!',
           meta: [
             {
                 hid: 'description',
                 name: 'description',
-                content: this.$store.getters.nameFilm(this.film, 2)
+                content: this.$store.getters.nameFilm(this.$store.state.film, 2)
             }
           ]
         }
@@ -37,21 +37,14 @@ export default ({
     },
 
     async asyncData({ params, store }){
-        let id = params.id, film;
-        if(store.state.films.length == 0){
+        let id = params.id;
+        if(!store.state.film){
             await store.dispatch("getFilm", id)
             await store.dispatch("getFilms")
         }
-
-        film = store.state.film;
-        // else
-        //     film = await store.state.films.filter(v=>v.id==id)[0]
-
-    // "film", "src", "lng_", "lng", "sub", "dubb", "type"
-        return {film}
     },
 
-    async mounted(){
+    created(){
         
     }
 })
