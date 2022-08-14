@@ -1,5 +1,5 @@
 <template>
-    <Player v-if="$store.state.film != null" type="1"/>
+    <Player type="1"/>
 </template>
 
 <script>
