@@ -1,4 +1,4 @@
-const host = ''
+const host = 'http://www.wel.az'
 
 
 export {host}

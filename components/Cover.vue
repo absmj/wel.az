@@ -75,7 +75,7 @@
                 </div>
             </div>
     </div>
-    <div v-else style="height: 50vh" class="d-flex justify-content-center align-items-center">
+    <div v-else-if="!$store.state.searchLoading && $store.getters.films.length == 0" style="height: 50vh" class="d-flex justify-content-center align-items-center">
       <div class="alert alert-warning text-center">No result</div>
     </div>
 </template>

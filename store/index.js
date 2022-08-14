@@ -22,11 +22,11 @@
   })
   
   export const actions = {
-    async getFilms({commit, state}, data = [1, 20]){
+    async getFilms({commit,getters,state}, data = [1, 20]){
       commit('setSearchLoading', true)
 
       const films = state.query.length > 0 ?
-                        await this.$axios.$post(`${host}/search.php`, qs.stringify({s: state.query, m: data[0], mx: data[1], type: 1})) :
+                        await this.$axios.$post(`${host}/search.php`, qs.stringify({s: state.query, ignore: getters.films.map(v => v.id), m: data[0], mx: data[1], type: 1})) :
                         await this.$axios.$post(`${host}/api.php`, qs.stringify({...state.filter, p:data[0], m: data[1], type: 1, s: 1}))
       
       commit('setSearchLoading', false)
