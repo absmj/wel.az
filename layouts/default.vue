@@ -38,13 +38,15 @@
 
         </nav>
       </div>
-      <cover />
+      <cover class="d-none d-md-block" />
     </div>
-    <div class="mt-auto">
+    <div class="mt-2 mt-md-auto p-2">
       <list />
-      <filtering v-if="filter"/>
-      <Player v-if="player" type="1" :film = "$store.state.films[$store.state.selected]"/>
     </div>
+    <!-- <p class="text-white">{{screen}}</p> -->
+    <MobileCover v-if="screen < 798 && $store.getters.films.length > 0 && mobileModal" />
+    <filtering v-if="filter"/>
+    <Player v-if="player" type="1" :film = "$store.state.films[$store.state.selected]"/>
     <Nuxt />
   </div>
 </template>
@@ -53,9 +55,10 @@
 
 import {mapMutations, mapGetters} from "vuex"
 import {functions} from "@/mixins.js"
+import MobileCover from "@/components/MobileCover"
 
 export default {
-
+  components: {MobileCover},
   mixins: [functions],
   data(){
     return{
@@ -63,7 +66,9 @@ export default {
       filter: false,
       player: false,
       films: [],
-      search: ''
+      search: '',
+      screen: null,
+      mobileModal: false
     }
   },
   watch:{
@@ -73,8 +78,12 @@ export default {
   },
 
   mounted(){
+      this.screen = window.screen.width;
       this.$root.$on("closeFilter",e => this.filter = false)
       this.$root.$on('player', e => this.player = e)
+      this.$root.$on("modal", v => this.mobileModal = v)
+      this.$root.$on("close", v => this.mobileModal = v)
+
 
   },
 

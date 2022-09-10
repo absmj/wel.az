@@ -25,9 +25,9 @@
                                         <div v-if="!/\-\d+/.test($store.getters.films[$store.state.selected].country)" class="d-flex justify-content-center flex-wrap test"><i class="fas fa-globe-americas icn-pad text-white"></i>
                                           <p class="_g_l_item" v-for = "(country, i) in $store.getters.films[$store.state.selected].country.split(',')" :key="i"><template v-if="i != 0">, </template>
                                           <!-- <nuxt-link :to = "'/filter/' + JSON.stringify(f)"> -->
-                                          <nuxt-link :to = "'/filter/'">
+                                          <!-- <nuxt-link :to = "'/filter/'"> -->
                                             <span @click="$store.dispatch('filter', [country, 2])">{{$store.state.lang[$store.state.language].countries[country]}}</span>
-                                          </nuxt-link>
+                                          <!-- </nuxt-link> -->
                                           </p>
                                         </div>
                                   </div>
@@ -41,9 +41,9 @@
                                         <span class="_g_l_item" v-for = "(genre, i) in $store.getters.films[$store.state.selected].genre.split(',')" :key="i">
                                           <template v-if="i != 0">, </template>
                                             <!-- <nuxt-link :to = "'/filter/' + genre + '-g'"> -->
-                                            <nuxt-link :to = "'/filter/'">
+                                            <!-- <nuxt-link :to = "'/filter/'"> -->
                                               <span @click="$store.dispatch('filter', [genre, 1])">{{$store.state.lang[$store.state.language].genres[genre]}}</span>
-                                            </nuxt-link>
+                                            <!-- </nuxt-link> -->
                                         </span>
 
                                         <span class="ml-2"><i v-if = "$store.getters.films[$store.state.selected].srt.length > 0" class="fas fa-closed-captioning" title="Subtitr mövcuddur"></i></span>
@@ -75,7 +75,7 @@
                 </div>
             </div>
     </div>
-    <div v-else-if="!$store.state.searchLoading && $store.getters.films.length == 0" style="height: 50vh" class="d-flex justify-content-center align-items-center">
+    <div v-else-if="$store.state.searchLoading == false && $store.getters.films.length == 0" style="height: 50vh" class="d-flex justify-content-center align-items-center">
       <div class="alert alert-warning text-center">No result</div>
     </div>
 </template>

@@ -1,5 +1,5 @@
 <template>
-    <Player type="1"/>
+    <Player v-if="$store.state.film" type="1"/>
 </template>
 
 <script>
@@ -16,12 +16,12 @@ export default ({
 
     head () {
         return {
-          title: this.$store.getters.nameFilm(this.$store.state.film, 1) + ' - wel! - watch!, enjoy!, learn!',
+          title: (this.$store.getters.nameFilm(this.$store.state.film, 1) ?? this.id) + ' - wel! - watch!, enjoy!, learn!',
           meta: [
             {
                 hid: 'description',
                 name: 'description',
-                content: this.$store.getters.nameFilm(this.$store.state.film, 2)
+                content: this.$store?.getters.nameFilm(this.$store.state.film, 2)
             }
           ]
         }
@@ -36,16 +36,14 @@ export default ({
         }
     },
 
-    async asyncData({ params, store }){
-        let id = params.id;
-        if(!store.state.film){
-            await store.dispatch("getFilm", id)
-            await store.dispatch("getFilms")
-        }
+    async asyncData({ params}){
+        const id = params.id
+        return { id }
     },
 
-    created(){
-        
+    async created(){
+        await this.$store.dispatch("getFilm", this.id)
+        await this.$store.dispatch("getFilms")
     }
 })
 </script>
