@@ -18,7 +18,7 @@
     query: '',
     askAgain: false,
     firstAsk: null,
-    searchLoading: false
+    searchLoading: null
   })
   
   export const actions = {
@@ -204,6 +204,7 @@
       },
 
       nameFilm: (state) => (id, type = 1, onlyFilm = false) => {
+        if(!id) return;
 
         let t, l = state.language, 
             arr = !onlyFilm ? (type == 1 ? id.name : id.w_content):

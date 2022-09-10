@@ -9,7 +9,6 @@ const qs = require('qs');
 
 export default {
   async asyncData({store}){
-    await store.dispatch("getFilms")
   },
 
   async mounted(){
@@ -17,7 +16,7 @@ export default {
   },
 
   async created(){
-
+    await this.$store.dispatch("getFilms")
   }
 }
 </script>

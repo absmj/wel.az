@@ -320,7 +320,7 @@ a:hover{
 }
 
 .tab-pane{
-  max-height: 400px; max-width: 100%; overflow: auto;
+  max-height: 100vh; max-width: 100%; overflow: auto;
 }
 
 .nav-item {

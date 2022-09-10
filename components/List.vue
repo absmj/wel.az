@@ -1,17 +1,17 @@
  
 <template>
 
-  <div v-if="$store.getters.films.length > 0" style="position: relative;" class="d-flex flex-nowrap justify-content-around align-items-center">
+  <div v-if="$store.getters.films.length > 0 && $store.state.server" style="position: relative;" class="d-flex flex-nowrap justify-content-around align-items-center">
     <div @mouseover = "lScr = 1" @mouseleave = "lScr = 0" class="d-none d-md-block o-ctrl-btn">
       <i class="fas fa-angle-left" @click = "swipeLeft"></i>
     </div> 
 
-    <div class="tab-pane active d-flex flex-row p-0 m-0 justify-content-center justify-content-md-start flex-wrap flex-md-nowrap tb-cnt" role="tabpanel" ref="scrl">
+    <div class="tab-pane active d-flex flex-row p-0 m-0 justify-content-center justify-content-md-start flex-wrap flex-md-nowrap tb-cnt" role="tabpanel" @scroll="mobileLoad" ref="scrl">
 
       <div class="d-flex flex-wrap flex-md-nowrap justify-content-center justify-content-md-start">
             <div class="position-relative film-item" v-for="(flm, k) in $store.getters.films" :key = "k">                            
-              <div class="film-poster-in-the-list mr-2 p-1" @mouseenter = "$store.dispatch('select', k)">
-                <img class="img-fluid film-poster" :src="(flm.poster == null || flm.poster == '') ? `http://cdn${flm.g_id.split('_')[0]}.video.az/storage/${($store.state.type === 2 ? 'tvseries' : 'movie')}/${flm.g_id.split('_')[1]}/cover.jpg` : `//upload.wikimedia.org/wikipedia/${flm.poster}`"/>
+              <div class="film-poster-in-the-list mr-2 p-1" @touchstart = "$store.dispatch('select', k)" @touchend="$root.$emit('modal', true)" @mouseenter = "$store.dispatch('select', k)">
+                <img class="img-fluid film-poster ml-2" :src="(flm.poster == null || flm.poster == '') ? `http://cdn${flm.g_id.split('_')[0]}.video.az/storage/${($store.state.type === 2 ? 'tvseries' : 'movie')}/${flm.g_id.split('_')[1]}/cover.jpg` : `//upload.wikimedia.org/wikipedia/${flm.poster}`"/>
               </div>
                 <div class="d-flex justify-content-center align-items-center f-p-shadow">
                   <i class="fas fa-ellipsis-v more-o-f"></i>
@@ -62,6 +62,19 @@ export default {
 
 
   methods:{
+    mobileLoad(){
+      let bl = false;
+      this.$root.$emit("backdr", false);
+
+      if((this.$refs["scrl"].clientHeight + this.$refs["scrl"].scrollTop > this.$refs["scrl"].scrollHeight - 150 && this.screen < 769) && (this.films.length > 6) && !this.load && !bl)
+      {
+
+        this.scrollTo(this.$refs["scrl"], 150, 1000, 2);
+        bl = true;
+        this.$refs["scrl"].scrollTop = this.$refs["scrl"].scrollTop + 100;
+      }
+    },
+
     swipeLeft() {
         const content = this.$refs.scrl;
 
